@@ -6,8 +6,9 @@ Users.AddToEnd('Second');
 Users.AddToEnd('Third');
 Users.AddToEnd('Fourth');
 
-//console.log(Users);
-Users.PrintAll();
+console.log(Users.FindItemAt(3));
+console.log(Users.FindItemAt(4));
+
 //console.log(Users.__proto__);
 //console.log(Users);
 
