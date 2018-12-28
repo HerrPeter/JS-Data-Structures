@@ -1,2 +1,1 @@
-# JS-Data-Structures
-JS Data Structures Collection
+[Welcome Page](Home)
