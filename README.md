@@ -5,7 +5,7 @@ To better understand JavaScript/ES6, I'm working to create all types of data str
 I will attempt to keep my implementations up to date with ES6, but realize some of the limitations with Node.js (i.e. import/export keywords).
 
 ## Data Structures:
-- [ ] Singly Linked List
+- [x] [Singly Linked List](https://github.com/HerrPeterr/JS-Data-Structures/blob/master/JS%20Data%20Structures/Data%20Structs/Linked%20Lists.js)
 - [ ] Doubly Linked List
 - [ ] Stack
 - [ ] Queue
