@@ -1,5 +1,5 @@
 ﻿// Linked List.js : Defines the implementation for a singly linked list.
-'use strict';
+//'use strict';
 
 // Imports:
 const Err = require('../misc/Errors');
@@ -75,7 +75,7 @@ OneLinkList.prototype.AddToEnd = function(data) {
  * Returns the item at the desired position in the list.
  * @param {Number} position - The position in the list where the item should be located.
  */
-OneLinkList.prototype.FindItemAt = function(position) {
+OneLinkList.prototype.FindAt = function(position) {
     // Show error when trying to access position outside of list.
     if(this.count === 0 || position > this.count || position < 1) {
         throw Error(Err.ListErr.NonExistant(OneLinkList.name));
@@ -90,6 +90,32 @@ OneLinkList.prototype.FindItemAt = function(position) {
     }
 
     return currItem;
+}
+
+/**
+ * Removes the item at the desired position in the list.
+ * @param {Number} position - The position in the list where the item should be located.
+ */
+OneLinkList.prototype.RemoveAt = function(position) {
+    // Show error when trying to access position outside of list.
+    if(this.count === 0 || position > this.count || position < 1) {
+        throw Error(Err.ListErr.NonExistant(OneLinkList.name));
+    } else if(position % 1 != 0 || typeof(position) != Number.name.toLowerCase()) {
+        throw Error(Err.ListErr.InvalidPosition());
+    }
+
+    // Linearly search for item before desired item (1 -> last).
+    let currItem = this.first,
+        beforeItemToRemove, itemToRemove;
+    for(let currCount = 1; currCount < position; currCount++) {
+        beforeItemToRemove = currItem;
+        itemToRemove = currItem.next;
+        currItem = currItem.next;
+    }
+
+    beforeItemToRemove.next = itemToRemove.next;
+    delete itemToRemove;
+    this.count--;
 }
 
 /**

@@ -5,9 +5,9 @@ var Users = new LinkedLists.OneLinkList('First');
 Users.AddToEnd('Second');
 Users.AddToEnd('Third');
 Users.AddToEnd('Fourth');
-
-console.log(Users.FindItemAt(3));
-console.log(Users.FindItemAt(4));
+Users.RemoveAt(4);
+Users.PrintAll();
+//console.log(Users);
 
 //console.log(Users.__proto__);
 //console.log(Users);
