@@ -1,5 +1,5 @@
 ﻿// Linked List.js : Defines the implementation for a singly linked list.
-//'use strict';
+//'use strict'; // This breaks deleting list items.
 
 // Imports:
 const Err = require('../misc/Errors');
@@ -14,29 +14,26 @@ class OneLinkList {
     constructor(data) {
         // List properties.
         this.count = 0;
-        this.first = null;
-        this.last = null;
+        this.first = new Item();
+        this.last = new Item();
 
         // Check if first item was passed as data.
         if(data !== undefined) {
             this.AddToEnd(data);
-            // this.first = new _Node(data);
-            // this.last = this.first;
-            // this.count++;
         }
-
-        // NOTE: Can delete variables that are removed from the list.
-        //delete this.last;
     }
 }
 
+/**
+ * The item container for a linked list.
+ */
 class Item {
     /**
      * Constructor to create a new list item.
      * @param {any} data - The data the new item should hold.
      * @param {Item} next - The data for the next node (list item).
      */
-    constructor(data) {
+    constructor(data = null) {
         this.data = data;
         this.next = null;
     }
@@ -78,9 +75,9 @@ OneLinkList.prototype.AddToEnd = function(data) {
 OneLinkList.prototype.FindAt = function(position) {
     // Show error when trying to access position outside of list.
     if(this.count === 0 || position > this.count || position < 1) {
-        throw Error(Err.ListErr.NonExistant(OneLinkList.name));
+        throw new Err.DSException(Err.ListErr.NonExistant(OneLinkList.name), 101);
     } else if(position % 1 != 0 || typeof(position) != Number.name.toLowerCase()) {
-        throw Error(Err.ListErr.InvalidPosition());
+        throw new Err.DSException(Err.ListErr.InvalidPosition(), 102);
     }
 
     // Linearly search for item (1 -> last).
@@ -99,9 +96,9 @@ OneLinkList.prototype.FindAt = function(position) {
 OneLinkList.prototype.RemoveAt = function(position) {
     // Show error when trying to access position outside of list.
     if(this.count === 0 || position > this.count || position < 1) {
-        throw Error(Err.ListErr.NonExistant(OneLinkList.name));
+        throw new Err.DSException(Err.ListErr.NonExistant(OneLinkList.name), 201);
     } else if(position % 1 != 0 || typeof(position) != Number.name.toLowerCase()) {
-        throw Error(Err.ListErr.InvalidPosition());
+        throw new Err.DSException(Err.ListErr.InvalidPosition(), 202);
     }
 
     // Linearly search for item before desired item (1 -> last).
@@ -116,6 +113,41 @@ OneLinkList.prototype.RemoveAt = function(position) {
     beforeItemToRemove.next = itemToRemove.next;
     delete itemToRemove;
     this.count--;
+}
+
+OneLinkList.prototype.Contains = function(data) {
+    // Check if valid data was passed as an argument.
+    if(!data) {
+        throw new Err.DSException(Err.ListErr.InvalidData(), 301);
+    }
+
+    // Search through list sequentially for the data.
+    let currItem = this.first,
+        containsData = false;
+
+    // If data param is an object.
+    if(typeof(data) == 'object') {
+        while(currItem) {
+            if(JSON.stringify(currItem.data) === JSON.stringify(data)) {
+                containsData = true;
+                break;
+            }
+
+            currItem = currItem.next;
+        }
+        // Else data param is a non-reference data type.
+    } else {
+        while(currItem) {
+            if(currItem.data === data) {
+                containsData = true;
+                break;
+            }
+
+            currItem = currItem.next;
+        }
+    }
+
+    return containsData;
 }
 
 /**

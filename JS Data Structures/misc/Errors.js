@@ -12,7 +12,28 @@ const ListErr = {
     },
     InvalidPosition: function() {
         return `The position provided was not a valid integer.`;
+    },
+    InvalidData: function() {
+        return `No valid data was passed as an argument.`;
     }
 }
 
-module.exports.ListErr = ListErr;
+/**
+ * Data Structure error class.
+ */
+class DSException {
+    /**
+     * Creates a new data structure exception.
+     * @param {String} message - Details why the error occured.
+     * @param {Number} errCode - Numeric code to represent this error.
+     */
+    constructor(message, errCode) {
+        this.message = message;
+        this.errCode = errCode;
+    }
+}
+
+module.exports = {
+    ListErr: ListErr,
+    DSException: DSException,
+}
