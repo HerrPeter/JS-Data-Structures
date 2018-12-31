@@ -29,7 +29,7 @@ class DSException {
      */
     constructor(message, errCode) {
         this.message = message;
-        this.errCode = errCode;
+        this.code = errCode;
     }
 }
 
