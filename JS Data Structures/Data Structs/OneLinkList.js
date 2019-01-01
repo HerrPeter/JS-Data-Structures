@@ -24,7 +24,6 @@ class OneLinkList {
         }
     }
 }
-
 /**
  * The item container for a linked list.
  */
@@ -39,7 +38,6 @@ class Item {
         this.next = null;
     }
 }
-
 /**
  * Method to add a new item to the end of the list.
  * @param {any} data - The data the new item holds.
@@ -57,17 +55,19 @@ OneLinkList.prototype.AddToEnd = function(data) {
         this.first = newItem;
         this.last = this.first;
     } else {
-        while(currItem.next !== null) {
-            currItem = currItem.next;
-        }
-
-        currItem.next = newItem;
+        this.last.next = newItem;
         this.last = newItem;
+
+        // while(currItem.next !== null) {
+        //     currItem = currItem.next;
+        // }
+
+        // currItem.next = newItem;
+        // this.last = newItem;
     }
 
     this.count++;
 }
-
 /**
  * Returns the item at the desired position in the list.
  * @param {Number} position - The position in the list where the item should be located.
@@ -90,7 +90,6 @@ OneLinkList.prototype.FindAt = function(position) {
 
     return currItem;
 }
-
 /**
  * Removes the item at the desired position in the list.
  * @param {Number} position - The position in the list where the item should be located.
@@ -122,11 +121,14 @@ OneLinkList.prototype.RemoveAt = function(position) {
         }
 
         beforeItemToRemove.next = itemToRemove.next;
+        // Check if removing the last item.
+        if(itemToRemove === this.last) {
+            this.last = beforeItemToRemove;
+        }
         itemToRemove = null;
     }
     this.count--;
 }
-
 /**
  * Removes the first item matching the data passed.
  * @param {any} data - The data to search and destroy.
@@ -205,7 +207,6 @@ OneLinkList.prototype.RemoveThis = function(data) {
 
     itemToRemove = null;
 }
-
 /**
  * Checks if the list has an item with the passed data.
  * @param {any} data - The data to check for.
@@ -244,7 +245,6 @@ OneLinkList.prototype.Contains = function(data) {
 
     return containsData;
 }
-
 /**
  * Print all items of the list to the console.
  */
@@ -262,7 +262,6 @@ OneLinkList.prototype.PrintAll = function() {
         curr = curr.next;
     }
 }
-
 /**
  * All single linked list exports.
  */
