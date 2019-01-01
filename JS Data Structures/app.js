@@ -1,29 +1,13 @@
 // app.js : Main entry point for the app.
 const OneLinkList = require('./Data Structs/OneLinkList');
-const OneListTest = require('../tests/OneTest');
 const TwoLinkList = require('./Data Structs/TwoLinkList');
+const test_OneList = require('./tests/Test_OneLinkList');
 
-// OneLinkList empty param test.
-if(OneListTest.EmptyParamTest(OneListTest.EmptyFinal)) {
-    console.log('OneLinkList Empty Param test PASS.');
-} else {
-    console.log('OneLinkList Empty Param test FAIL.');
-}
-// OneLinkList contains test.
-if(OneListTest.ContainsTest()) {
-    console.log('OneLinkList Contains test PASS.');
-} else {
-    console.log('OneLinkList Contains test PASS.');
-}
-// OneLinkList AddRemove test.
-if(OneListTest.AddRemoveTest()) {
-    console.log('OneLinkList AddRemove test PASS.');
-} else {
-    console.log('OneLinkList AddRemove test FAIL.');
-}
+// -- Test the OneLinkList --
+test_OneList.OverallOneLinkTest(true);
 
 
-// TwoLinkList
+// -- TwoLinkList --
 // var users2 = new TwoLinkList('one');
 // users2.AddToEnd('two');
 // users2.AddToEnd('three');

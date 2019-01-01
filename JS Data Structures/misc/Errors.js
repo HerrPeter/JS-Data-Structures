@@ -1,5 +1,19 @@
-// Errors.js - Contains all error messages the js data structures will use.
+// Errors.js : Contains all error messages the js data structures will use.
 
+/**
+ * Data Structure error class.
+ */
+class DSException {
+    /**
+     * Creates a new data structure exception.
+     * @param {String} message - Details why the error occured.
+     * @param {Number} errCode - Numeric code to represent this error.
+     */
+    constructor(message, errCode) {
+        this.message = message;
+        this.code = errCode;
+    }
+}
 /**
  * Errors that may occur in lists.
  */
@@ -15,22 +29,8 @@ const ListErr = {
     },
     InvalidData: function() {
         return `No valid data was passed as an argument.`;
-    }
-}
-
-/**
- * Data Structure error class.
- */
-class DSException {
-    /**
-     * Creates a new data structure exception.
-     * @param {String} message - Details why the error occured.
-     * @param {Number} errCode - Numeric code to represent this error.
-     */
-    constructor(message, errCode) {
-        this.message = message;
-        this.code = errCode;
-    }
+    },
+    EmptyList: `The linked list is empty.`,
 }
 
 module.exports = {

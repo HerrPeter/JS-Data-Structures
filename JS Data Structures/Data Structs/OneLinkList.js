@@ -74,10 +74,12 @@ OneLinkList.prototype.AddToEnd = function(data) {
  */
 OneLinkList.prototype.FindAt = function(position) {
     // Show error when trying to access position outside of list.
-    if(this.count === 0 || position > this.count || position < 1) {
-        throw new Err.DSException(Err.ListErr.NonExistant(OneLinkList.name), 101);
+    if(this.count === 0) {
+        throw new Err.DSException(Err.ListErr.EmptyList, 100);
     } else if(position % 1 != 0 || typeof position != Number.name.toLowerCase()) {
         throw new Err.DSException(Err.ListErr.InvalidPosition(), 102);
+    } else if(position > this.count || position < 1) {
+        throw new Err.DSException(Err.ListErr.NonExistant(OneLinkList.name), 101);
     }
 
     // Sequentially search for item (1 -> last).
@@ -262,11 +264,6 @@ OneLinkList.prototype.PrintAll = function() {
 }
 
 /**
- * All linked list exports.
+ * All single linked list exports.
  */
 module.exports = OneLinkList;
-
-// Use below if exporting multiple items.
-// module.exports = {
-//     OneLinkList: OneLinkList,
-// }
