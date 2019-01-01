@@ -99,21 +99,29 @@ OneLinkList.prototype.RemoveAt = function(position) {
         throw new Err.DSException(Err.ListErr.NonExistant(OneLinkList.name), 201);
     }
     // Show error when the position is invalid.
-    else if(position % 1 != 0 || typeof(position) != Number.name.toLowerCase()) {
+    else if(position % 1 != 0 || typeof position != Number.name.toLowerCase()) {
         throw new Err.DSException(Err.ListErr.InvalidPosition(), 202);
     }
 
-    // Linearly search for item before desired item (1 -> last).
-    let currItem = this.first,
-        beforeItemToRemove, itemToRemove;
-    for(let currCount = 1; currCount < position; currCount++) {
-        beforeItemToRemove = currItem;
-        itemToRemove = currItem.next;
-        currItem = currItem.next;
+    // Handle list with one item.
+    if(this.count === 1) {
+        this.first = null;
+        this.last = null;
     }
+    // Linearly search for item before desired item (1 -> last).
+    else {
+        let currItem = this.first,
+            beforeItemToRemove,
+            itemToRemove;
+        for(let currCount = 1; currCount < position; currCount++) {
+            beforeItemToRemove = currItem;
+            itemToRemove = currItem.next;
+            currItem = currItem.next;
+        }
 
-    beforeItemToRemove.next = itemToRemove.next;
-    delete itemToRemove;
+        beforeItemToRemove.next = itemToRemove.next;
+        itemToRemove = null;
+    }
     this.count--;
 }
 
@@ -161,6 +169,12 @@ OneLinkList.prototype.RemoveThis = function(data) {
                 if(JSON.stringify(currItem.next.data) === JSON.stringify(data)) {
                     itemToRemove = currItem.next;
                     currItem.next = currItem.next.next;
+
+                    // Check if removing last item.
+                    if(itemToRemove === this.last) {
+                        this.last = currItem;
+                    }
+                    this.count--;
                     break;
                 }
 
@@ -173,6 +187,12 @@ OneLinkList.prototype.RemoveThis = function(data) {
                 if(currItem.next.data === data) {
                     itemToRemove = currItem.next;
                     currItem.next = currItem.next.next;
+
+                    // Check if removing last item.
+                    if(itemToRemove === this.last) {
+                        this.last = currItem;
+                    }
+                    this.count--;
                     break;
                 }
 
@@ -181,7 +201,7 @@ OneLinkList.prototype.RemoveThis = function(data) {
         }
     }
 
-    delete itemToRemove;
+    itemToRemove = null;
 }
 
 /**

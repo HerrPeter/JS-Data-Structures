@@ -92,7 +92,7 @@ TwoLinkList.prototype.RemoveAt = function(position) {
         throw new Err.DSException(Err.ListErr.NonExistant(OneLinkList.name), 201);
     }
     // Show error when the position is invalid.
-    else if(position % 1 != 0 || typeof(position) != Number.name.toLowerCase()) {
+    else if(position % 1 != 0 || typeof position != Number.name.toLowerCase()) {
         throw new Err.DSException(Err.ListErr.InvalidPosition(), 202);
     }
 
@@ -105,7 +105,7 @@ TwoLinkList.prototype.RemoveAt = function(position) {
         currItem = currItem.next;
     }
 
-    //if(currCount)
+    // if(currCount)
     beforeItemToRemove.next = itemToRemove.next;
     delete itemToRemove;
     this.count--;
