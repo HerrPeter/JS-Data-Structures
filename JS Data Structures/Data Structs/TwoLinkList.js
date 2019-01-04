@@ -60,17 +60,18 @@ TwoLinkList.prototype.AddToEnd = function(data) {
 
     this.count++;
 }
-
 /**
  * Returns the item at the desired position in the list.
  * @param {Number} position - The position in the list where the item should be located.
  */
 TwoLinkList.prototype.FindAt = function(position) {
-    // Show error when trying to access position outside of list.
-    if(this.count === 0 || position > this.count || position < 1) {
-        throw new Err.DSException(Err.ListErr.NonExistant(OneLinkList.name), 101);
+    // Show error when trying to access an invalid position.
+    if(this.count === 0) {
+        throw new Err.DSException(Err.ListErr.EmptyList, 100);
     } else if(position % 1 != 0 || typeof position != Number.name.toLowerCase()) {
-        throw new Err.DSException(Err.ListErr.InvalidPosition(), 102);
+        throw new Err.DSException(Err.ListErr.InvalidPosition(), 101);
+    } else if(position > this.count || position < 1) {
+        throw new Err.DSException(Err.ListErr.NonExistant(TwoLinkList.name), 102);
     }
 
     // Sequentially search for item (1 -> last).
@@ -81,7 +82,6 @@ TwoLinkList.prototype.FindAt = function(position) {
 
     return currItem;
 }
-
 /**
  * Removes the item at the desired position in the list.
  * @param {Number} position - The position in the list where the item should be located.
@@ -89,44 +89,124 @@ TwoLinkList.prototype.FindAt = function(position) {
 TwoLinkList.prototype.RemoveAt = function(position) {
     // Show error when trying to access position outside of list.
     if(this.count === 0 || position > this.count || position < 1) {
-        throw new Err.DSException(Err.ListErr.NonExistant(OneLinkList.name), 201);
+        throw new Err.DSException(Err.ListErr.NonExistant(TwoLinkList.name), 201);
     }
     // Show error when the position is invalid.
     else if(position % 1 != 0 || typeof position != Number.name.toLowerCase()) {
         throw new Err.DSException(Err.ListErr.InvalidPosition(), 202);
     }
 
-    // Linearly search for item before desired item (1 -> last).
-    let currItem = this.first,
-        beforeItemToRemove, itemToRemove, currCount;
-    for(currCount = 1; currCount < position; currCount++) {
-        beforeItemToRemove = currItem;
-        itemToRemove = currItem.next;
-        currItem = currItem.next;
+    // Handle list with one item.
+    if(this.count === 1) {
+        this.first = null;
+        this.last = null;
     }
+    // Linearly search for item before desired item (1 -> last).
+    else {
+        let currItem = this.first,
+            itemToRemove = currItem;
+        for(let currCount = 1; currCount < position; currCount++) {
+            itemToRemove = currItem.next;
+            currItem = currItem.next;
+        }
 
-    // if(currCount)
-    beforeItemToRemove.next = itemToRemove.next;
-    delete itemToRemove;
+        // Special Case: position == 1
+        if(position === 1) {
+            itemToRemove.next.prev = null;
+            this.first = itemToRemove.next;
+        }
+        // Special Case: position == last
+        else if(position === this.count) {
+            itemToRemove.prev.next = null;
+            this.last = itemToRemove.prev;
+        }
+        // All other positions
+        else {
+            itemToRemove.prev.next = itemToRemove.next;
+            itemToRemove.next.prev = itemToRemove.prev;
+        }
+
+        itemToRemove = null;
+    }
     this.count--;
 }
-
 /**
- * Print all items of the list to the console.
+ * Removes the first item matching the data passed.
+ * @param {any} data - The data to search and destroy.
  */
-TwoLinkList.prototype.PrintAll = function() {
-    // Check if list is empty.
-    if(this.count === 0 || !(this.first instanceof Item)) {
-        console.log('Empty list.');
-        return;
+TwoLinkList.prototype.RemoveThis = function(data) {
+    // Check if the list is empty.
+    if(this.count === 0) {
+        throw new Err.DSException(Err.ListErr.NonExistant(TwoLinkList.name), 401);
+    }
+    // Check if valid data was passed as an argument.
+    else if(data === undefined) {
+        throw new Err.DSException(Err.ListErr.InvalidData(), 402);
     }
 
-    // Print each item to the console sequentially.
-    let curr = this.first;
-    while(curr) {
-        console.log(curr);
-        curr = curr.next;
+    // Search through list sequentially for the data.
+    let currItem = this.first,
+        itemToRemove;
+
+    // Handle list with one item.
+    if(this.count === 1) {
+        if(typeof(data) == 'object') {
+            if(JSON.stringify(currItem.data) === JSON.stringify(data)) {
+                this.first = null;
+                this.last = null;
+                this.count--;
+                return;
+            }
+        } else {
+            if(currItem.data === data) {
+                this.first = null;
+                this.last = null;
+                this.count--;
+                return;
+            }
+        }
     }
+    // Handle list with more than one item.
+    else {
+        // If data param is an object.
+        if(typeof(data) == 'object') {
+            while(currItem.next) {
+                if(JSON.stringify(currItem.next.data) === JSON.stringify(data)) {
+                    itemToRemove = currItem.next;
+                    currItem.next = currItem.next.next;
+
+                    // Check if removing last item.
+                    if(itemToRemove === this.last) {
+                        this.last = currItem;
+                    }
+                    this.count--;
+                    break;
+                }
+
+                currItem = currItem.next;
+            }
+        }
+        // Else data param is a non-reference data type.
+        else {
+            while(currItem.next) {
+                if(currItem.next.data === data) {
+                    itemToRemove = currItem.next;
+                    currItem.next = currItem.next.next;
+
+                    // Check if removing last item.
+                    if(itemToRemove === this.last) {
+                        this.last = currItem;
+                    }
+                    this.count--;
+                    break;
+                }
+
+                currItem = currItem.next;
+            }
+        }
+    }
+
+    itemToRemove = null;
 }
 
 module.exports = TwoLinkList;

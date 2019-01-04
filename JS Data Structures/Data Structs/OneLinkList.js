@@ -48,8 +48,7 @@ OneLinkList.prototype.AddToEnd = function(data) {
         throw new Err.DSException(Err.ListErr.InvalidData(), 301);
     }
 
-    let newItem = new Item(data),
-        currItem = this.first;
+    let newItem = new Item(data);
 
     if(this.count === 0) {
         this.first = newItem;
@@ -57,13 +56,6 @@ OneLinkList.prototype.AddToEnd = function(data) {
     } else {
         this.last.next = newItem;
         this.last = newItem;
-
-        // while(currItem.next !== null) {
-        //     currItem = currItem.next;
-        // }
-
-        // currItem.next = newItem;
-        // this.last = newItem;
     }
 
     this.count++;
@@ -73,7 +65,7 @@ OneLinkList.prototype.AddToEnd = function(data) {
  * @param {Number} position - The position in the list where the item should be located.
  */
 OneLinkList.prototype.FindAt = function(position) {
-    // Show error when trying to access position outside of list.
+    // Show error when trying to access an invalid position.
     if(this.count === 0) {
         throw new Err.DSException(Err.ListErr.EmptyList, 100);
     } else if(position % 1 != 0 || typeof position != Number.name.toLowerCase()) {
@@ -104,29 +96,30 @@ OneLinkList.prototype.RemoveAt = function(position) {
         throw new Err.DSException(Err.ListErr.InvalidPosition(), 202);
     }
 
-    // Handle list with one item.
-    if(this.count === 1) {
-        this.first = null;
-        this.last = null;
-    }
     // Linearly search for item before desired item (1 -> last).
-    else {
-        let currItem = this.first,
-            beforeItemToRemove,
-            itemToRemove;
-        for(let currCount = 1; currCount < position; currCount++) {
-            beforeItemToRemove = currItem;
-            itemToRemove = currItem.next;
-            currItem = currItem.next;
-        }
-
-        beforeItemToRemove.next = itemToRemove.next;
-        // Check if removing the last item.
-        if(itemToRemove === this.last) {
-            this.last = beforeItemToRemove;
-        }
-        itemToRemove = null;
+    let currItem = this.first,
+        beforeItemToRemove = this.first.next, // Set it equal to first.next to make case w/1 item work.
+        itemToRemove = currItem;
+    for(let currCount = 1; currCount < position; currCount++) {
+        beforeItemToRemove = currItem;
+        itemToRemove = currItem.next;
+        currItem = currItem.next;
     }
+
+    // Special Case: position == 1
+    if(position === 1) {
+        this.first = itemToRemove.next;
+    }
+    // Special Case: position == last
+    if(position === this.count) {
+        this.last = beforeItemToRemove; // Case w/2 items: need to set beforeItemToRemove.next = null (Done).
+    }
+    // All other positions
+    if(this.count > 1 && position > 1) {
+        beforeItemToRemove.next = itemToRemove.next;
+    }
+
+    itemToRemove = null;
     this.count--;
 }
 /**

@@ -1,4 +1,7 @@
 // Test_OneLinkList.js : The testing environment for OneLinkList data structure.
+// Note 2 Self : Can improve tests by allowing constructor to add list of items
+//      (make sure it works) and reset list before every test. This would make
+//      the tests more fail-proof.
 const OneLinkList = require('../Data Structs/OneLinkList');
 const DSErr = require('../misc/Errors');
 
@@ -441,7 +444,3 @@ module.exports = {
     AddRemoveTest: AddRemoveTest,
     FindAtTest: FindAtTest,
 }
-
-
-// Notes:
-// - Need to add test to remove first item (end points first/last).
