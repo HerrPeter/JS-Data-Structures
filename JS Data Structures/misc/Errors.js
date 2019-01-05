@@ -1,4 +1,5 @@
 // Errors.js : Contains all error messages the js data structures will use.
+// Note: Consider adding a default error code.
 
 /**
  * Data Structure error class.
@@ -17,23 +18,19 @@ class DSException {
 /**
  * Errors that may occur in lists.
  */
-const ListErr = {
+const ErrMsg = {
     NonExistant: function(list) {
         if(!list) {
             list = 'this';
         }
         return `The desired item does not exist in ${list} instance.`;
     },
-    InvalidPosition: function() {
-        return `The position provided was not a valid integer.`;
-    },
-    InvalidData: function() {
-        return `No valid data was passed as an argument.`;
-    },
-    EmptyList: `The linked list is empty.`,
+    InvalidPosition: `The position provided was not a valid integer.`,
+    InvalidData: `No valid data was passed as an argument.`,
+    EmptyList: `The data structure container appears to be empty.`,
 }
 
 module.exports = {
-    ListErr: ListErr,
+    ErrMsg: ErrMsg,
     DSException: DSException,
 }

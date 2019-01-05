@@ -45,7 +45,7 @@ class Item {
 OneLinkList.prototype.AddToEnd = function(data) {
     // Check if valid data was passed as an argument.
     if(data === undefined) {
-        throw new Err.DSException(Err.ListErr.InvalidData(), 301);
+        throw new Err.DSException(Err.ErrMsg.InvalidData, 301);
     }
 
     let newItem = new Item(data);
@@ -67,11 +67,11 @@ OneLinkList.prototype.AddToEnd = function(data) {
 OneLinkList.prototype.FindAt = function(position) {
     // Show error when trying to access an invalid position.
     if(this.count === 0) {
-        throw new Err.DSException(Err.ListErr.EmptyList, 100);
+        throw new Err.DSException(Err.ErrMsg.EmptyList, 100);
     } else if(position % 1 != 0 || typeof position != Number.name.toLowerCase()) {
-        throw new Err.DSException(Err.ListErr.InvalidPosition(), 102);
+        throw new Err.DSException(Err.ErrMsg.InvalidPosition, 102);
     } else if(position > this.count || position < 1) {
-        throw new Err.DSException(Err.ListErr.NonExistant(OneLinkList.name), 101);
+        throw new Err.DSException(Err.ErrMsg.NonExistant(OneLinkList.name), 101);
     }
 
     // Sequentially search for item (1 -> last).
@@ -89,11 +89,11 @@ OneLinkList.prototype.FindAt = function(position) {
 OneLinkList.prototype.RemoveAt = function(position) {
     // Show error when trying to access position outside of list.
     if(this.count === 0 || position > this.count || position < 1) {
-        throw new Err.DSException(Err.ListErr.NonExistant(OneLinkList.name), 201);
+        throw new Err.DSException(Err.ErrMsg.NonExistant(OneLinkList.name), 201);
     }
     // Show error when the position is invalid.
     else if(position % 1 != 0 || typeof position != Number.name.toLowerCase()) {
-        throw new Err.DSException(Err.ListErr.InvalidPosition(), 202);
+        throw new Err.DSException(Err.ErrMsg.InvalidPosition, 202);
     }
 
     // Linearly search for item before desired item (1 -> last).
@@ -129,11 +129,11 @@ OneLinkList.prototype.RemoveAt = function(position) {
 OneLinkList.prototype.RemoveThis = function(data) {
     // Check if the list is empty.
     if(this.count === 0) {
-        throw new Err.DSException(Err.ListErr.NonExistant(OneLinkList.name), 401);
+        throw new Err.DSException(Err.ErrMsg.NonExistant(OneLinkList.name), 401);
     }
     // Check if valid data was passed as an argument.
     else if(data === undefined) {
-        throw new Err.DSException(Err.ListErr.InvalidData(), 402);
+        throw new Err.DSException(Err.ErrMsg.InvalidData, 402);
     }
 
     // Item to remove.
@@ -205,7 +205,7 @@ function FindThisHelper(list, data) {
 OneLinkList.prototype.Contains = function(data) {
     // Check if valid data was passed as an argument.
     if(data === undefined) {
-        throw new Err.DSException(Err.ListErr.InvalidData(), 301);
+        throw new Err.DSException(Err.ErrMsg.InvalidData, 301);
     }
 
     // Search through list sequentially for the data.
