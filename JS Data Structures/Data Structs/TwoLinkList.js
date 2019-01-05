@@ -1,3 +1,6 @@
+// TwoLinkList.js : Defines the implementation for a doubly linked list.
+
+// Imports:
 const err = require('../misc/Errors');
 
 class TwoLinkList {
