@@ -137,76 +137,76 @@ TwoLinkList.prototype.RemoveAt = function(position) {
 TwoLinkList.prototype.RemoveThis = function(data) {
     // Check if the list is empty.
     if(this.count === 0) {
-        throw new Err.DSException(Err.ListErr.NonExistant(TwoLinkList.name), 401);
+        throw new Err.DSException(Err.ListErr.NonExistant(OneLinkList.name), 401);
     }
     // Check if valid data was passed as an argument.
     else if(data === undefined) {
         throw new Err.DSException(Err.ListErr.InvalidData(), 402);
     }
 
-    // Search through list sequentially for the data.
-    let currItem = this.first,
-        itemToRemove;
+    // Item to remove.
+    let itemToRemove;
 
     // Handle list with one item.
     if(this.count === 1) {
-        if(typeof(data) == 'object') {
-            if(JSON.stringify(currItem.data) === JSON.stringify(data)) {
-                this.first = null;
-                this.last = null;
-                this.count--;
-                return;
-            }
-        } else {
-            if(currItem.data === data) {
-                this.first = null;
-                this.last = null;
-                this.count--;
-                return;
-            }
+        if(JSON.stringify(this.first.data) === JSON.stringify(data)) {
+            itemToRemove = this.first;
+            this.first = null;
+            this.last = null;
+            this.count--;
         }
     }
     // Handle list with more than one item.
     else {
-        // If data param is an object.
-        if(typeof(data) == 'object') {
-            while(currItem.next) {
-                if(JSON.stringify(currItem.next.data) === JSON.stringify(data)) {
-                    itemToRemove = currItem.next;
-                    currItem.next = currItem.next.next;
-
-                    // Check if removing last item.
-                    if(itemToRemove === this.last) {
-                        this.last = currItem;
-                    }
-                    this.count--;
-                    break;
-                }
-
-                currItem = currItem.next;
-            }
-        }
-        // Else data param is a non-reference data type.
-        else {
-            while(currItem.next) {
-                if(currItem.next.data === data) {
-                    itemToRemove = currItem.next;
-                    currItem.next = currItem.next.next;
-
-                    // Check if removing last item.
-                    if(itemToRemove === this.last) {
-                        this.last = currItem;
-                    }
-                    this.count--;
-                    break;
-                }
-
-                currItem = currItem.next;
-            }
-        }
+        itemToRemove = FindThisHelper(this, data);
     }
 
     itemToRemove = null;
+}
+/**
+ * Helper method for the FindThis method.
+ * @param {OneLinkList} list - The list used to search through.
+ * @param {Any} data - The data to search for.
+ */
+function FindThisHelper(list, data){
+    // Variables needed to search 
+    let currItem = list.first,
+        nextItem = list.first.next,
+        itemToRemove;
+
+    // Check the first item.
+    if(JSON.stringify(list.first.data) === JSON.stringify(data)){
+        itemToRemove = list.first;
+        list.first = list.first.next;
+        list.first.prev = null;
+        list.count--;
+        return itemToRemove;
+    }
+    
+    // Check the last item.
+    if(JSON.stringify(list.last.data) === JSON.stringify(data)){
+        itemToRemove = list.last;
+        list.last.prev.next = null; // Set the second to last item's next to null.
+        list.last = list.last.prev; // Set last to second to last item.
+        list.count--;
+        return itemToRemove;
+    }
+
+    // Search through the items in between the first and last sequentially.
+    currItem = currItem.next;
+    for(let currPos = 2; currPos < list.count; currPos++){                
+        if(JSON.stringify(currItem.data) === JSON.stringify(data)){
+            itemToRemove = currItem;
+            currItem.prev.next = currItem.next; // Set prev item's next to this item's next.
+            currItem.next.prev = currItem.prev; // Set next item's prev to this item's prev.
+            list.count--;
+            return itemToRemove;
+        }
+        
+        currItem = currItem.next;        
+    }
+
+    return itemToRemove;
 }
 
 module.exports = TwoLinkList;

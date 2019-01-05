@@ -136,69 +136,67 @@ OneLinkList.prototype.RemoveThis = function(data) {
         throw new Err.DSException(Err.ListErr.InvalidData(), 402);
     }
 
-    // Search through list sequentially for the data.
-    let currItem = this.first,
-        itemToRemove;
+    // Item to remove.
+    let itemToRemove;
 
     // Handle list with one item.
     if(this.count === 1) {
-        if(typeof(data) == 'object') {
-            if(JSON.stringify(currItem.data) === JSON.stringify(data)) {
-                this.first = null;
-                this.last = null;
-                this.count--;
-                return;
-            }
-        } else {
-            if(currItem.data === data) {
-                this.first = null;
-                this.last = null;
-                this.count--;
-                return;
-            }
+        if(JSON.stringify(this.first.data) === JSON.stringify(data)) {
+            itemToRemove = this.first;
+            this.first = null;
+            this.last = null;
+            this.count--;
         }
     }
     // Handle list with more than one item.
     else {
-        // If data param is an object.
-        if(typeof(data) == 'object') {
-            while(currItem.next) {
-                if(JSON.stringify(currItem.next.data) === JSON.stringify(data)) {
-                    itemToRemove = currItem.next;
-                    currItem.next = currItem.next.next;
-
-                    // Check if removing last item.
-                    if(itemToRemove === this.last) {
-                        this.last = currItem;
-                    }
-                    this.count--;
-                    break;
-                }
-
-                currItem = currItem.next;
-            }
-        }
-        // Else data param is a non-reference data type.
-        else {
-            while(currItem.next) {
-                if(currItem.next.data === data) {
-                    itemToRemove = currItem.next;
-                    currItem.next = currItem.next.next;
-
-                    // Check if removing last item.
-                    if(itemToRemove === this.last) {
-                        this.last = currItem;
-                    }
-                    this.count--;
-                    break;
-                }
-
-                currItem = currItem.next;
-            }
-        }
+        itemToRemove = FindThisHelper(this, data);
     }
 
     itemToRemove = null;
+}
+/**
+ * Helper method for the FindThis method.
+ * @param {OneLinkList} list - The list used to search through.
+ * @param {Any} data - The data to search for.
+ */
+function FindThisHelper(list, data){
+    // Variables needed to search 
+    let currItem = list.first,
+        nextItem = list.first.next,
+        itemToRemove;
+
+    // Check the first item.
+    if(JSON.stringify(list.first.data) === JSON.stringify(data)){
+        itemToRemove = list.first;
+        list.first = list.first.next;
+        list.count--;
+        return itemToRemove;
+    }
+
+    // Search through the items in between the first and last sequentially.
+    for(let currPos = 1; currPos < list.count-1; currPos++){                
+        if(JSON.stringify(nextItem.data) === JSON.stringify(data)){
+            itemToRemove = nextItem;
+            currItem.next = nextItem.next;
+            list.count--;
+            return itemToRemove;
+        }
+        
+        currItem = nextItem;
+        nextItem = nextItem.next;
+    }
+
+    // Check the last item.
+    if(JSON.stringify(list.last.data) === JSON.stringify(data)){
+        // Note: currItem == one before the end (from the for statement).
+        itemToRemove = list.last;
+        currItem.next = null;
+        list.last = currItem;
+        list.count--;
+    }
+
+    return itemToRemove;
 }
 /**
  * Checks if the list has an item with the passed data.
