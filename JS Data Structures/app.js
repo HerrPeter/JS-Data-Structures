@@ -8,8 +8,6 @@ list = new TwoLinkList('one');
 list.AddToEnd('two');
 list.AddToEnd('three');
 list.AddToEnd('four');
-list.RemoveThis(new String('three'));
-console.log(list);
-//list.PrintAll();
+list.PrintAll();
 
 // -- Test --

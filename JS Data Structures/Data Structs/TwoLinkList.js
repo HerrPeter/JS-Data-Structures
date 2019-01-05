@@ -137,7 +137,7 @@ TwoLinkList.prototype.RemoveAt = function(position) {
 TwoLinkList.prototype.RemoveThis = function(data) {
     // Check if the list is empty.
     if(this.count === 0) {
-        throw new Err.DSException(Err.ListErr.NonExistant(OneLinkList.name), 401);
+        throw new Err.DSException(Err.ListErr.NonExistant(TwoLinkList.name), 401);
     }
     // Check if valid data was passed as an argument.
     else if(data === undefined) {
@@ -165,26 +165,26 @@ TwoLinkList.prototype.RemoveThis = function(data) {
 }
 /**
  * Helper method for the FindThis method.
- * @param {OneLinkList} list - The list used to search through.
+ * @param {TwoLinkList} list - The list used to search through.
  * @param {Any} data - The data to search for.
  */
-function FindThisHelper(list, data){
+function FindThisHelper(list, data) {
     // Variables needed to search 
     let currItem = list.first,
         nextItem = list.first.next,
         itemToRemove;
 
     // Check the first item.
-    if(JSON.stringify(list.first.data) === JSON.stringify(data)){
+    if(JSON.stringify(list.first.data) === JSON.stringify(data)) {
         itemToRemove = list.first;
         list.first = list.first.next;
         list.first.prev = null;
         list.count--;
         return itemToRemove;
     }
-    
+
     // Check the last item.
-    if(JSON.stringify(list.last.data) === JSON.stringify(data)){
+    if(JSON.stringify(list.last.data) === JSON.stringify(data)) {
         itemToRemove = list.last;
         list.last.prev.next = null; // Set the second to last item's next to null.
         list.last = list.last.prev; // Set last to second to last item.
@@ -194,19 +194,64 @@ function FindThisHelper(list, data){
 
     // Search through the items in between the first and last sequentially.
     currItem = currItem.next;
-    for(let currPos = 2; currPos < list.count; currPos++){                
-        if(JSON.stringify(currItem.data) === JSON.stringify(data)){
+    for(let currPos = 2; currPos < list.count; currPos++) {
+        if(JSON.stringify(currItem.data) === JSON.stringify(data)) {
             itemToRemove = currItem;
             currItem.prev.next = currItem.next; // Set prev item's next to this item's next.
             currItem.next.prev = currItem.prev; // Set next item's prev to this item's prev.
             list.count--;
             return itemToRemove;
         }
-        
-        currItem = currItem.next;        
+
+        currItem = currItem.next;
     }
 
     return itemToRemove;
 }
+/**
+ * Checks if the list has an item with the passed data.
+ * @param {any} data - The data to check for.
+ */
+TwoLinkList.prototype.Contains = function(data) {
+    // Check if valid data was passed as an argument.
+    if(data === undefined) {
+        throw new Err.DSException(Err.ListErr.InvalidData(), 301);
+    }
 
+    // Search through list sequentially for the data.
+    let currItem = this.first,
+        containsData = false;
+
+    // If data param is an object.
+    while(currItem instanceof Item) {
+        if(JSON.stringify(currItem.data) === JSON.stringify(data)) {
+            containsData = true;
+            break;
+        }
+
+        currItem = currItem.next;
+    }
+
+    return containsData;
+}
+/**
+ * Print all items of the list to the console.
+ */
+TwoLinkList.prototype.PrintAll = function() {
+    // Check if the list is empty.
+    if(this.count === 0 || !(this.first instanceof Item)) {
+        console.log('Empty list.');
+        return;
+    }
+
+    // Print each item to the console.
+    let currItem = this.first;
+    while(currItem instanceof Item) {
+        console.log(currItem);
+        currItem = currItem.next;
+    }
+}
+/**
+ * All doubly linked list exports.
+ */
 module.exports = TwoLinkList;

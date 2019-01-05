@@ -160,14 +160,14 @@ OneLinkList.prototype.RemoveThis = function(data) {
  * @param {OneLinkList} list - The list used to search through.
  * @param {Any} data - The data to search for.
  */
-function FindThisHelper(list, data){
+function FindThisHelper(list, data) {
     // Variables needed to search 
     let currItem = list.first,
         nextItem = list.first.next,
         itemToRemove;
 
     // Check the first item.
-    if(JSON.stringify(list.first.data) === JSON.stringify(data)){
+    if(JSON.stringify(list.first.data) === JSON.stringify(data)) {
         itemToRemove = list.first;
         list.first = list.first.next;
         list.count--;
@@ -175,20 +175,20 @@ function FindThisHelper(list, data){
     }
 
     // Search through the items in between the first and last sequentially.
-    for(let currPos = 1; currPos < list.count-1; currPos++){                
-        if(JSON.stringify(nextItem.data) === JSON.stringify(data)){
+    for(let currPos = 1; currPos < list.count - 1; currPos++) {
+        if(JSON.stringify(nextItem.data) === JSON.stringify(data)) {
             itemToRemove = nextItem;
             currItem.next = nextItem.next;
             list.count--;
             return itemToRemove;
         }
-        
+
         currItem = nextItem;
         nextItem = nextItem.next;
     }
 
     // Check the last item.
-    if(JSON.stringify(list.last.data) === JSON.stringify(data)){
+    if(JSON.stringify(list.last.data) === JSON.stringify(data)) {
         // Note: currItem == one before the end (from the for statement).
         itemToRemove = list.last;
         currItem.next = null;
@@ -204,7 +204,7 @@ function FindThisHelper(list, data){
  */
 OneLinkList.prototype.Contains = function(data) {
     // Check if valid data was passed as an argument.
-    if(!data) {
+    if(data === undefined) {
         throw new Err.DSException(Err.ListErr.InvalidData(), 301);
     }
 
@@ -213,25 +213,13 @@ OneLinkList.prototype.Contains = function(data) {
         containsData = false;
 
     // If data param is an object.
-    if(typeof(data) == 'object') {
-        while(currItem) {
-            if(JSON.stringify(currItem.data) === JSON.stringify(data)) {
-                containsData = true;
-                break;
-            }
-
-            currItem = currItem.next;
+    while(currItem instanceof Item) {
+        if(JSON.stringify(currItem.data) === JSON.stringify(data)) {
+            containsData = true;
+            break;
         }
-        // Else data param is a non-reference data type.
-    } else {
-        while(currItem) {
-            if(currItem.data === data) {
-                containsData = true;
-                break;
-            }
 
-            currItem = currItem.next;
-        }
+        currItem = currItem.next;
     }
 
     return containsData;
@@ -247,10 +235,10 @@ OneLinkList.prototype.PrintAll = function() {
     }
 
     // Print each item to the console.
-    let curr = this.first;
-    while(curr) {
-        console.log(curr);
-        curr = curr.next;
+    let currItem = this.first;
+    while(currItem instanceof Item) {
+        console.log(currItem);
+        currItem = currItem.next;
     }
 }
 /**
