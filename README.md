@@ -8,7 +8,7 @@ I will attempt to keep my implementations up to date with ES6, but realize some 
 - [x] [Singly Linked List](https://github.com/HerrPeterr/JS-Data-Structures/blob/master/JS%20Data%20Structures/Data%20Structs/OneLinkList.js)
 - [x] [Doubly Linked List](https://github.com/HerrPeterr/JS-Data-Structures/blob/master/JS%20Data%20Structures/Data%20Structs/TwoLinkList.js)
 - [x] [Stack](https://github.com/HerrPeterr/JS-Data-Structures/blob/master/JS%20Data%20Structures/Data%20Structs/Stack.js)
-- [ ] Queue
+- [x] [Queue](https://github.com/HerrPeterr/JS-Data-Structures/blob/master/JS%20Data%20Structures/Data%20Structs/Queue.js)
 - [ ] Heap
 - [ ] Hash Table
 - [ ] Binary Search Tree (BST)
