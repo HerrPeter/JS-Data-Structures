@@ -2,18 +2,26 @@
 const OneLinkList = require('./Data Structs/OneLinkList');
 const TwoLinkList = require('./Data Structs/TwoLinkList');
 const Stack = require('./Data Structs/Stack');
+const Queue = require('./Data Structs/Queue');
 const test_OneList = require('./tests/Test_OneLinkList');
 
-// -- Stack --
-let stak = new Stack('before one');
-stak.Push('one');
-stak.Push('two');
-stak.Pop();
-stak.Push('two');
-stak.Push('three');
-stak.Swap();
-let top = stak.Peek();
-top = null;
-stak.Empty();
+// -- Queue --
+let q = new Queue('before one');
+q.Enqueue('one');
+q.Enqueue('two');
+q.Enqueue('two');
+q.Enqueue('three');
+
+let top = q.Peek();
+console.log(top);
+
+q.Dequeue();
+q.Dequeue();
+q.Dequeue();
+q.Dequeue();
+let empty = q.IsEmpty();
+console.log(empty);
+// top = null;
+// stak.Empty();
 
 // -- Test --
